@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout">
+
+<head>
+<meta charset="utf-8" />
+<title>Compte</title>
+<link rel="stylesheet" th:href="@{bootstrap/css/bootstrap.min.css}"
+	href="../static/bootstrap/css/bootstrap.min.css" />
+
+</head>
+<body>
+	<div layout:fragment="contenue">
+		<div class="col-lg-5">
+			<div class="panel panel-primary ">
+				<div class="panel-heading">Liste des clients</div>
+				<div class="panel-body">
+					<form th:action="@{client(page=${page},nem=${nem})}"
+						th:method="GET">
+						<div class="col-md-9">
+							<input class="form-control" th:value="${nem}" name="nem"
+								placeholder="Nom ou Email" type="text">
+						</div>
+						<button type="submit" class="btn btn-primary">Recherche</button>
+					</form>
+					<br>
+					<table class="table table-striped ">
+						<tr>
+							<th>Code</th>
+							<th>Nom</th>
+							<th>Email</th>
+							<th>opérations</th>
+						</tr>
+						<tr th:each="cl:${clients}">
+							<td th:text="${cl.code}"></td>
+							<td th:text="${cl.nom}"></td>
+							<td th:text="${cl.email}"></td>
+							<td><a class="btn btn-primary btn-sm"
+								th:href="@{client(numClient=${cl.code},page=${page},nem=${nem} )}"><span
+									class="glyphicon glyphicon-list"></span></a>
+								<a
+								class="btn btn-success btn-sm" sec:authorize="hasAuthority('role_admin')"
+								th:href="@{client(numClientUp=${cl.code},page=${page}, nem=${nem} , update=1 )}">
+									<span class="glyphicon glyphicon-pencil"></span>
+								</a>
+								
+								<a sec:authorize="hasAuthority('role_admin')" onclick="return confirm('êtes-vous sûr de vouloir supprimer ce client')"
+								class="btn btn-danger btn-sm"
+								th:href="@{deleteClient(numclient=${cl.code})}">
+									<span class="glyphicon glyphicon-trash"></span>
+								</a>
+							</td>
+
+						</tr>
+					</table>
+				</div>
+				<div class="text-center">
+					<ul class="pagination">
+						<li class="page-item"><a
+							th:href="@{client(numClient=${numClient},page=${currentPage}-1 ,nem=${nem}) nem=${nem}}">Previous</a></li>
+						<li th:each="page,p:${pages}" class="page-item"
+							th:classappend="${currentPage} == ${p.index} ? 'active' "><a
+							th:href="@{client(numClient=${numClient},page=${p.index},nem=${nem})}"
+							th:text="${p.index}+1"></a></li>
+						<li class="page-item"><a
+							th:href="@{client(numClient=${numClient},page=${currentPage}+1,nem=${nem})}">Next</a></li>
+					</ul>
+				</div>
+
+			</div>
+		</div>
+		
+		
+			
+		<div class="col-lg-7" th:if="${comptes}">
+			<div class="panel panel-primary ">
+				<div class="panel-heading">Liste des comptes</div>
+				<div class="panel-body">
+					<table class="table table-striped ">
+						<tr>
+							<th>Numero</th>
+							<th>Date de création</th>
+							<th>Solde</th>
+							<th>Type</th>
+						</tr>
+						<tr th:each="cp:${comptes}">
+							<td th:text="${cp.numero}"></td>
+							<td th:text="${cp.dateCreation}"></td>
+							<td th:text="${cp.solde}"></td>
+							<td th:text="${cp.class.simpleName}"></td>
+
+						</tr>
+
+					</table>
+					<div class="col-md-offset-11">
+					<a sec:authorize="hasAuthority('role_admin')" class="btn btn-info  right"
+					 th:href="@{addCompte(numClient= ${#httpServletRequest.getParameter('numClient')}  )}  ">
+								<span class="glyphicon glyphicon-plus"></span>
+					</a>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+
+
+		<div class="col-md-7 " th:if="${update}">
+			<div class="panel panel-primary">
+				<div class="panel panel-heading">Modification du clients</div>
+
+				<div class="panel panel-body">
+
+					<form th:action="@{/updateClient}" method="post">
+						<input name="code" type="hidden" th:value="${clientUp.code}"> 
+						<div class="col-md-6 col-md-offset-3 distance ">
+							<label class="control-label"> Nom</label> <input
+								class="form-control" th:value="${clientUp.nom}" type="text" name="nom" />
+						</div>
+						<div class="col-md-6 col-md-offset-3 distance ">
+							<label class="control-label"> Email </label> <input
+								class="form-control" type="email"  th:value="${clientUp.email}" name="email" />
+						</div>
+						<div class="col-md-6 col-md-offset-3 distance ">
+							<input class="btn btn-primary form-control" type="submit"
+								value="Modifier" />
+						</div>
+					</form>
+				</div>
+
+			</div>
+
+		</div>
+		
+		<div class="col-md-7" th:if="!${update}" sec:authorize="hasAuthority('role_admin')" >
+			<div class="panel panel-primary">
+				<div class="panel panel-heading">Ajouter un client</div>
+
+				<div class="panel panel-body">
+
+					<form th:action="@{/addClient}" method="post">
+						<input name="code" type="hidden" > 
+						<div class="col-md-6 col-md-offset-3 distance ">
+							<label class="control-label"> Nom</label> <input
+								class="form-control" type="text" name="nom" />
+						</div>
+						<div class="col-md-6 col-md-offset-3 distance ">
+							<label class="control-label"> Email </label> <input
+								class="form-control" type="email"   name="email" />
+						</div>
+						<div class="col-md-6 col-md-offset-3 distance ">
+							<input class="btn btn-primary form-control" type="submit"
+								value="Ajouter" />
+						</div>
+					</form>
+				</div>
+
+			</div>
+
+		</div>
+		<div class="col-md-7 " th:if="${#httpServletRequest.getParameter('up')}">
+			<div class="panel panel-primary">
+				<div class="panel panel-heading">Confirmation</div>
+
+				<div class="panel panel-body">
+					<label class="alert-success"> le client est bien modifier </label>
+				</div>
+
+			</div>
+
+		</div>
+		
+		<div class="col-md-7 " th:if="${#httpServletRequest.getParameter('mod')}">
+			<div class="panel panel-primary">
+				<div class="panel panel-heading">Confirmation</div>
+
+				<div class="panel panel-body">
+					<label class="alert-success"> le client est bien ajouter </label>
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"	  >
+<head>
+<meta charset="utf-8">
+<title>Layout</title>
+<link rel="stylesheet" th:href="@{bootstrap/css/bootstrap.min.css}" href="../static/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" th:href="@{style.css}"  />
+
+
+
+</head>
+<body>
+
+	<header>
+	<div class="navbar nav-divider">
+		<div class="container-fluid navbar-default">
+			<ul class="nav navbar-nav ">
+				<li><a th:href="@{index}"> Compte  </a></li>
+				<li><a th:href="@{client}">Client</a></li>
+				
+			</ul>
+			<ul class="nav navbar-nav navbar-right navbar-default ">
+				<li class="right"><a th:href="@{login(logout)}"> Déconnexion  </a></li>
+			</ul>
+		</div>
+	</div>
+	</header>
+	<section layout:fragment="contenue">
+	
+	</section>
+
+
+
+</body>
+</html>

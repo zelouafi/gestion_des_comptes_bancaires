@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Authentification</title>
+<link rel="stylesheet" th:href="@{bootstrap/css/bootstrap.min.css}" href="../static/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" th:href="@{style.css}"  href="../static/style.css"/>
+</head>
+<body>
+
+	<div class="distance col-md-6 col-md-offset-3">
+	
+		<div class="panel panel-default">
+			<div class="panel panel-heading"> Authentification </div>
+		
+			<div class="panel panel-body">
+			
+				<form th:action="@{/login}" method="post">
+					<div class="text-danger text-center distance" th:if="${#httpServletRequest.getParameter('error')}">
+						<label> Nom d'utilisateur ou mot de passe incorrect</label>
+					</div>
+					<div class="text-danger text-center distance" th:if="${#httpServletRequest.getParameter('logout')}">
+						<label> Vous êtes bien déconnecté </label>
+					</div>
+				
+					<div class="col-md-6 col-md-offset-3 distance ">
+						<label class="control-label"> Nom d'utilisateur</label>
+						<input class="form-control" type="text" name="username"/>
+					</div>
+					
+					<div class="col-md-6 col-md-offset-3 distance ">
+						<label class="control-label" > Mot de passe </label>
+						<input class="form-control" type="password" name="password"/>
+					</div>
+					
+
+					<div class="col-md-6 col-md-offset-3 distance ">
+						<input class="btn btn-info form-control" type="submit" value="connecter"/>
+					</div>
+
+	
+				
+				
+				</form>
+			
+			</div>
+		
+		</div>
+	
+	</div>
+
+</body>
+</html>

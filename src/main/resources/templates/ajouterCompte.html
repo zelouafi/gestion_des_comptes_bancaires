@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout">
+
+<head>
+<meta charset="utf-8" />
+<title>Compte</title>
+<link rel="stylesheet" th:href="@{bootstrap/css/bootstrap.min.css}"
+	href="../static/bootstrap/css/bootstrap.min.css" />
+
+</head>
+
+<body>
+	<div layout:fragment="contenue">
+		
+		<div class="col-md-8 col-md-offset-2" >
+			<div class="panel panel-primary">
+				<div class="panel panel-heading">Ajouter un compte</div>
+
+				<div class="panel panel-body">
+
+					<form th:action="@{/confirmCompte}" method="post">
+						<input name="numClient" type="hidden" th:value="${numClient}" > 
+					
+						
+						<div class="col-md-6 col-md-offset-3 distance ">
+							<label class="control-label"> Solde initiale </label> <input
+								class="form-control" type="text" name="solde" />
+						</div>
+						
+						<div class="col-md-6 col-md-offset-3 distance ">
+							<label class="control-label"> Type de Compte </label> 
+							<select id="type" class="form-control"  name="type"
+								onchange=" var valeur = this.value ;if ( valeur == 'cc' ){ document.querySelector('#taux').style.display = 'none' ; document.querySelector('#decouvert').style.display = 'block' } else { document.querySelector('#decouvert').style.display = 'none' ;document.querySelector('#taux').style.display = 'block' }">
+								<option id="cc" value="cc"> Compte courant</option>
+								<option id="ce" value="ce"> Compte epargne</option>
+							</select>
+						</div>
+						
+						<div id="decouvert" class="col-md-6 col-md-offset-3 distance ">
+							<label class="control-label"> Decouvert </label> <input
+								class="form-control" type="text" name="decouvert" />
+						</div>
+						
+						<div id="taux" class="col-md-6 col-md-offset-3 distance ">
+							<label class="control-label"> Taux </label> <input
+								class="form-control" type="text" name="taux" />
+						</div>
+						
+						<div class="col-md-6 col-md-offset-3 distance ">
+							<input class="btn btn-primary form-control" type="submit"
+								value="Ajouter" />
+						</div>
+					</form>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+
+</body>
+
+</html>
